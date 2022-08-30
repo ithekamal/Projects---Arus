@@ -1,4 +1,3 @@
-
 teams = ["mumbai", "chennai", "delhi", "kalcut", "indiana", "rome",'kamal'];
 startingDate = "06-08-2022";
 venues = ["chepauk"];
@@ -108,27 +107,13 @@ const assignedWeekdays = (weekendDates, venues) => {
 
 scheduledWeekdays = assignedWeekdays(weekendDates, venues);
 
-//Function fo assigning Slots for Weekdays
-const slots = (scheduledWeekdays) => {
-  slot = [];
-  for (i = 0; i < scheduledWeekdays.length; i++) {
-    if (i % 2 == 0) {
-      slot.push(1);
-    } else {
-      slot.push(2);
-    }
-  }
-  return slot;
-};
-slot = slots(scheduledWeekdays);
-
 //Function to return Schedule Table
 const timeTable = () => {
   Table = [];
   for (i = 0; i < matchUp.length; i++) {
     singleMatch = {};
     singleMatch["match"] = i + 1;
-    singleMatch["slot"] = slot[i];
+    singleMatch["slot"] = (i%2)+1;
     singleMatch["team1"] = matchUp[i]["group1"];
     singleMatch["team2"] = matchUp[i]["group2"];
     singleMatch["day"] = Object.keys(scheduledWeekdays[i]);
@@ -267,13 +252,3 @@ const pointsTablesummary = (pointsList) =>{
     console.log(`${i+1}         ${teams[i].padEnd(14,' ')}       ${points[i]}`)}
   }}
 pointsTablesummary(sortedPointsTable)
-
-
-
-
-
-
-
-
-
-
