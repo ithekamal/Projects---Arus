@@ -109,7 +109,7 @@ scheduledWeekdays = assignedWeekdays(weekendDates, venues);
 
 //Function to return Schedule Table
 const timeTable = () => {
-  Table = [];
+  table = [];
   for (i = 0; i < matchUp.length; i++) {
     singleMatch = {};
     singleMatch["match"] = i + 1;
@@ -128,9 +128,9 @@ const timeTable = () => {
       singleMatch["defeated"] = matchUp[i]["group1"];
     }
 
-    Table.push(singleMatch);
+    table.push(singleMatch);
   }
-  return Table;
+  return table;
 };
 scheduledTable = timeTable();
 
