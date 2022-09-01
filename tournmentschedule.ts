@@ -1,4 +1,4 @@
-et teams:any = ['mumbai', 'chennai', 'delhi', 'kalcut'];
+let teams:any = ['mumbai', 'chennai', 'delhi', 'kalcut'];
 let startingDate:string = '06-08-2022';
 let venues:string[] = ['chepauk'];
 
