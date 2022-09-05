@@ -117,7 +117,22 @@ function sorting(teamwithRank) {
   }
   return sorted;
 }
-sortedPlayers = sorting(playerInfo);
+sorted = sorting(playerInfo);
+
+//function to assign points
+player1Point = 100;
+sorted[0]["points"] = 100;
+percentagetoReduce = 256 / sorted.length;
+function rankToPercentage(playerPoint, percentage) {
+  winningPercentage = playerPoint - playerPoint * (percentage / 100);
+  player1Point = winningPercentage;
+  return winningPercentage;
+}
+for (i = 1; i < sorted.length; i++) {
+  sorted[i]["points"] = rankToPercentage(player1Point, percentagetoReduce);
+}
+sortedPlayers = sorted
+
 //intial Suffle
 function initialSuffle(match) {
   m = match.length;
@@ -132,8 +147,11 @@ function initialSuffle(match) {
   return tplayers;
 }
 round1 = initialSuffle(sortedPlayers);
+
 //array stores matchresults
 matchResult = [];
+
+
 //function returns index number of Element in PlayerInfo,based on PlayerId
 function indexOfElementbyplayerID(search) {
   index = 0;
@@ -145,21 +163,20 @@ function indexOfElementbyplayerID(search) {
   }
   return index;
 }
-// Function returns Winner by Probability and updates each players played match details in playerInfo
+
+//function returns Winner by Probability and updates each players played match details in playerInfo
 function probabilityOfWin(player1, player2, main) {
   matchDetails = {};
-  matchDetails["matchNo"] = matchNumber ;
+  matchDetails["matchNo"] = matchNumber;
   matchDetails["round"] = roundNumber;
   matchDetails["opponent1"] = player1.name;
   matchDetails["opponent2"] = player2.name;
-  matchNumber =   matchNumber + 1;
-  playerRank1 = player1.rank;
-  playerRank2 = player2.rank;
-  difference = Math.abs(playerRank1 - playerRank2);
-  player2Probability = 100 / (difference + 1);
-  player1Probability  = 100 - 100 / (difference + 1);
+  matchNumber = matchNumber + 1;
+  totalPointsOfPlayers = player1.points + player2.points;
+  player1Probability = player1.points*100 / totalPointsOfPlayers;
   decide = Math.random() * 100;
-  if (decide >=   player1Probability) {
+
+  if (decide >= player1Probability) {
     updatedplayer1PlayedMatches = player1.playedMatch["played"] + 1;
     updatedplayer1WinnedMatch = player1.playedMatch["win"];
     updatedplayer1lostMatch = player1.playedMatch["loss"] + 1;
@@ -188,7 +205,6 @@ function probabilityOfWin(player1, player2, main) {
     matchInfo.push(matchDetails);
     return player2;
   } else {
-
     updatedplayer1PlayedMatches = player1.playedMatch["played"] + 1;
     updatedplayer1WinnedMatch = player1.playedMatch["win"] + 1;
     updatedplayer1lostMatch = player1.playedMatch["loss"];
@@ -216,7 +232,7 @@ function probabilityOfWin(player1, player2, main) {
     return player1;
   }
 }
-winner = [];
+
 // function returns Matchups
 function matching(match) {
   matches = [];
@@ -224,25 +240,27 @@ function matching(match) {
   match2 = match.filter((element) => match.indexOf(element) % 2 != 0);
   for (player = 0; player < match1.length; player++) {
     matches.push(
-      probabilityOfWin(match1[player], match2[player], playerInfo, player + 1)
+      probabilityOfWin(match1[player], match2[player], playerInfo)
     );
   }
   return matches;
 }
 matchNumber = 1;
 roundNumber = 1;
+
 //Loop to make Matchups between winners of each match
 while (round1.length > 1) {
   matchInfo = [];
   round1 = matching(round1);
-  winner.push(round1);
   matchResult.push(matchInfo);
   roundNumber = roundNumber + 1;
 }
+
 //match Schedule
 for (i = 0; i < matchResult.length; i++) {
   console.log(`----------------------Round${i + 1}----------------------`);
   console.table(matchResult[i]);
 }
+
 //Updated playerInfo
 console.log("Updated players Info\n", playerInfo);
