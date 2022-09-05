@@ -85,16 +85,18 @@ let playerInfo:playerDetail[] = [
     function probabilityOfWin(player1:any, player2:any,main:any) {
         matchResult = []
         let matchDetails:any = {}
-        matchDetails['matchNo'] = m
-        matchDetails['round'] = r
+        matchDetails['matchNo'] =  matchNumber
+        matchDetails['round'] = roundNumber
         matchDetails['opponent1'] = player1.name
         matchDetails['opponent2'] = player2.name
-        m = m + 1
-        let probability = Math.random()
-        let probabilityOfHighRank = 1 - probability
-        let probabilityOfLowRank = 1 - probabilityOfHighRank
-        let differ = Math.abs(probabilityOfLowRank - probabilityOfHighRank)
-        if ((probabilityOfLowRank > 0.45) && (differ > 0.25)) {
+        matchNumber =  matchNumber + 1
+        let playerRank1 = player1.rank;
+        let playerRank2 = player2.rank;
+        let difference = Math.abs(playerRank1 - playerRank2);
+        let player2Probability = 100 / (difference + 1);
+        let player1Probability  = 100 - 100 / (difference + 1);
+        let decide = Math.random() * 100;
+        if (decide >=   player1Probability) {
     
             let updatedplayer1PlayedMatches = player1.playedMatch['played'] + 1
             let updatedplayer1WinnedMatch = player1.playedMatch['win']
@@ -142,14 +144,14 @@ let playerInfo:playerDetail[] = [
         }
         return matches
     }
-    let m = 1
-    let r = 1
+    let  matchNumber = 1
+    let roundNumber = 1
     //Loop to make Matchups between winners of each match
     while (round1.length > 1) {
         round1 = matching(round1)
         winner.push(round1)
         matchResult = matchInfo
-        r = r + 1
+        roundNumber = roundNumber + 1
     }
 
  //function returns each round details inside one object 
@@ -186,6 +188,5 @@ let playerInfo:playerDetail[] = [
  console.log('-----------------------------------------------------------------------\nUpdated players Info\n',playerInfo)
     
 
-    
     
     
