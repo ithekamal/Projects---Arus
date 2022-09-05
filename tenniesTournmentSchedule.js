@@ -1,7 +1,7 @@
 playerInfo = [
   {
     playerId: "1234e4",
-    name: "kamal",
+    name: "kamal ",
     rank: 3,
     playedMatch: { played: 250, win: 200, loss: 48 },
   },
@@ -152,7 +152,7 @@ function probabilityOfWin(player1, player2, main) {
   matchDetails["round"] = roundNumber;
   matchDetails["opponent1"] = player1.name;
   matchDetails["opponent2"] = player2.name;
-  m = m + 1;
+  matchNumber =   matchNumber + 1;
   playerRank1 = player1.rank;
   playerRank2 = player2.rank;
   difference = Math.abs(playerRank1 - playerRank2);
