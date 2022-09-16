@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,9 +8,8 @@
     <title>Document</title>
 </head>
 <body>
-    <script>
-
-playersPointsinGame = {'system' : 0, 'you':0 }
+<script>
+    playersPointsinGame = {'system' : 0, 'you':0 }
 totalRounds = 4
 tossesInEachRound = 10
 playerNamesList = Object.keys(playersPointsinGame)
@@ -27,7 +27,7 @@ function storingEachMatchResults(playersName, totalPointstable, tossNo) {
     eachMatchDetails['Player2Name'] = playersName[1]
     player2Details = headOrTail('player2', eachMatchDetails)
     totalPointstable.push(eachMatchDetails)
-    return (`Toss: ${((Math.abs((tossNo - 10)) + 1))}  , ${playersName[0]}  gets ${(player1Details).padEnd(0, 16)}  - ${playersName[1].padStart(0, 9)}  gets ${player2Details}`)
+    return (`Toss: ${((Math.abs((tossNo - 10)) + 1))}\n${playersName[0]}  gets ${(player1Details)}\n${playersName[1].padStart(0, 9)}  gets ${player2Details}`)
 }
 
 //function to return Head or tail
@@ -49,24 +49,36 @@ function headOrTail(playerName,eachMatchDetatils) {
 
 
 function overAllRunningScore(mainScoreBoard,playerNameDetails) {
-
     winsOfEachPlayerinEachRound = {}
     player1Points = mainScoreBoard.reduce((prev,nxt) => prev + nxt.player1Points,0)
     player2Points = mainScoreBoard.reduce((prev,nxt) => prev + nxt.player2Points,0)
     winsOfEachPlayerinEachRound[playerNameDetails[0]] = player1Points
     winsOfEachPlayerinEachRound[playerNameDetails[1]] = player2Points
     console.table(winsOfEachPlayerinEachRound)
-
-    if (player1Points == player2Points) {
-        return (' by this round Both are Draw, they Both got ' + player1Points + ' points each ')
+    if(roundCounter < totalRounds){
+      if (player1Points == player2Points) {
+        return (' by the end of  this round Both Players are Draw, they Both got ' + player1Points + ' points each ')
     }
     else if ((player1Points) > (player2Points)) {
-        return ('by This Round ' + playerNameDetails[0] + ' is leading,by ' + Math.abs(player1Points - player2Points) + 'Points')
+        return (' by the end of  this ' + playerNameDetails[0] + ' is leading,by ' + Math.abs(player1Points - player2Points) + 'Points')
     }
     else {
-        return ('by This Round ' + playerNameDetails[1] + ' is leading,by ' + Math.abs(player1Points - player2Points) + 'Points')
+        return (' by the end of  this ' + playerNameDetails[1] + ' is leading,by ' + Math.abs(player1Points - player2Points) + 'Points')
     }
+}else{ if (player1Points == player2Points) {
+    return ('In this Game Both Players are Draw, they Both got ' + player1Points + ' points each ')
+    }
+    else if ((player1Points) > (player2Points)) {
+        return (' In this Game ' + playerNameDetails[0] + ' Win,by ' + Math.abs(player1Points - player2Points) + 'Points difference')
+    }
+    else {
+        return (' In this Game ' + playerNameDetails[1] + ' Win,by ' + Math.abs(player1Points - player2Points) + 'Points difference')
+    }
+
 }
+
+    }
+    
 
 //function/loop to make n number of matches for one round
 function roundMatch() {
@@ -80,8 +92,7 @@ function roundMatch() {
     )(tossesInEachRound);
 
     setTimeout(() => {
-        console.log(overAllRunningScore(
-            totalscorecard, playerNamesList))
+        console.log(overAllRunningScore(totalscorecard, playerNamesList))
         console.log('\n')
     }, 11000);
 }
@@ -93,19 +104,25 @@ tournment = setInterval(function eachRound() {
     }
     else {
         roundCounter+=1
+        console.log(`---------------Round ${roundCounter}---------------`)
         roundMatch()
         return eachRound
     }
 
 }(), 15000)
+
 setTimeout(() => {
-     getCSVFile() 
+    getCSVFile() 
     console.table(totalscorecard)
 
 }, 60100);
 //function to download CSV file of match scorecard i
 function getCSVFile() {
     cs =''
+    cs += 'Round,tossNumber,Player1Name,player1toss,player1Points,Player2Name,player2toss,player2Points,'
+    cs += '\r\n'
+
+
     for(i of totalscorecard){
         cs += i.round + ','
         cs += i.tossNumber+ ','
@@ -129,6 +146,6 @@ function getCSVFile() {
     activation.remove()
 }
 
-    </script>
+</script>
 </body>
 </html>
